@@ -76,10 +76,13 @@ model Product {
   name         String
   description  String
   imageUrls    String[] // Thay đổi từ imageUrl sang imageUrls (mảng)
+  createdAt    DateTime  @default(now()) // Thời gian tạo
   lastPostedAt DateTime? // Dùng để xoay vòng sản phẩm
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
+
+  rules AutoPostRule[]
 }
 
 model AutoPostRule {
@@ -96,6 +99,8 @@ model AutoPostRule {
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
+
+  products Product[]
 }
 
 // --- KẾT THÚC MODEL MỚI ---

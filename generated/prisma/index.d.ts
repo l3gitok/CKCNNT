@@ -1370,6 +1370,68 @@ export namespace Prisma {
 
 
   /**
+   * Count Type ProductCountOutputType
+   */
+
+  export type ProductCountOutputType = {
+    rules: number
+  }
+
+  export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    rules?: boolean | ProductCountOutputTypeCountRulesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCountOutputType
+     */
+    select?: ProductCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountRulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AutoPostRuleWhereInput
+  }
+
+
+  /**
+   * Count Type AutoPostRuleCountOutputType
+   */
+
+  export type AutoPostRuleCountOutputType = {
+    products: number
+  }
+
+  export type AutoPostRuleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    products?: boolean | AutoPostRuleCountOutputTypeCountProductsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AutoPostRuleCountOutputType without action
+   */
+  export type AutoPostRuleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutoPostRuleCountOutputType
+     */
+    select?: AutoPostRuleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AutoPostRuleCountOutputType without action
+   */
+  export type AutoPostRuleCountOutputTypeCountProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -5944,6 +6006,8 @@ export namespace Prisma {
     lastPostedAt?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    rules?: boolean | Product$rulesArgs<ExtArgs>
+    _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
   export type ProductSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5981,6 +6045,8 @@ export namespace Prisma {
   export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "imageUrls" | "createdAt" | "lastPostedAt" | "userId", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    rules?: boolean | Product$rulesArgs<ExtArgs>
+    _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -5993,6 +6059,7 @@ export namespace Prisma {
     name: "Product"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      rules: Prisma.$AutoPostRulePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6397,6 +6464,7 @@ export namespace Prisma {
   export interface Prisma__ProductClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    rules<T extends Product$rulesArgs<ExtArgs> = {}>(args?: Subset<T, Product$rulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AutoPostRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6829,6 +6897,30 @@ export namespace Prisma {
   }
 
   /**
+   * Product.rules
+   */
+  export type Product$rulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AutoPostRule
+     */
+    select?: AutoPostRuleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AutoPostRule
+     */
+    omit?: AutoPostRuleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AutoPostRuleInclude<ExtArgs> | null
+    where?: AutoPostRuleWhereInput
+    orderBy?: AutoPostRuleOrderByWithRelationInput | AutoPostRuleOrderByWithRelationInput[]
+    cursor?: AutoPostRuleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AutoPostRuleScalarFieldEnum | AutoPostRuleScalarFieldEnum[]
+  }
+
+  /**
    * Product without action
    */
   export type ProductDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7052,6 +7144,8 @@ export namespace Prisma {
     lastRunAt?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    products?: boolean | AutoPostRule$productsArgs<ExtArgs>
+    _count?: boolean | AutoPostRuleCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["autoPostRule"]>
 
   export type AutoPostRuleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7098,6 +7192,8 @@ export namespace Prisma {
   export type AutoPostRuleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "ruleName" | "platform" | "scheduleTime" | "frequency" | "promptTemplate" | "status" | "nextRunAt" | "lastRunAt" | "userId", ExtArgs["result"]["autoPostRule"]>
   export type AutoPostRuleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    products?: boolean | AutoPostRule$productsArgs<ExtArgs>
+    _count?: boolean | AutoPostRuleCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AutoPostRuleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -7110,6 +7206,7 @@ export namespace Prisma {
     name: "AutoPostRule"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      products: Prisma.$ProductPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7517,6 +7614,7 @@ export namespace Prisma {
   export interface Prisma__AutoPostRuleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    products<T extends AutoPostRule$productsArgs<ExtArgs> = {}>(args?: Subset<T, AutoPostRule$productsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7949,6 +8047,30 @@ export namespace Prisma {
      * Limit how many AutoPostRules to delete.
      */
     limit?: number
+  }
+
+  /**
+   * AutoPostRule.products
+   */
+  export type AutoPostRule$productsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product
+     */
+    select?: ProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product
+     */
+    omit?: ProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductInclude<ExtArgs> | null
+    where?: ProductWhereInput
+    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
+    cursor?: ProductWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
   }
 
   /**
@@ -8429,6 +8551,7 @@ export namespace Prisma {
     lastPostedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
     userId?: StringFilter<"Product"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    rules?: AutoPostRuleListRelationFilter
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -8440,6 +8563,7 @@ export namespace Prisma {
     lastPostedAt?: SortOrderInput | SortOrder
     userId?: SortOrder
     user?: UserOrderByWithRelationInput
+    rules?: AutoPostRuleOrderByRelationAggregateInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -8454,6 +8578,7 @@ export namespace Prisma {
     lastPostedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
     userId?: StringFilter<"Product"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    rules?: AutoPostRuleListRelationFilter
   }, "id">
 
   export type ProductOrderByWithAggregationInput = {
@@ -8497,6 +8622,7 @@ export namespace Prisma {
     lastRunAt?: DateTimeNullableFilter<"AutoPostRule"> | Date | string | null
     userId?: StringFilter<"AutoPostRule"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    products?: ProductListRelationFilter
   }
 
   export type AutoPostRuleOrderByWithRelationInput = {
@@ -8511,6 +8637,7 @@ export namespace Prisma {
     lastRunAt?: SortOrderInput | SortOrder
     userId?: SortOrder
     user?: UserOrderByWithRelationInput
+    products?: ProductOrderByRelationAggregateInput
   }
 
   export type AutoPostRuleWhereUniqueInput = Prisma.AtLeast<{
@@ -8528,6 +8655,7 @@ export namespace Prisma {
     lastRunAt?: DateTimeNullableFilter<"AutoPostRule"> | Date | string | null
     userId?: StringFilter<"AutoPostRule"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    products?: ProductListRelationFilter
   }, "id">
 
   export type AutoPostRuleOrderByWithAggregationInput = {
@@ -8857,6 +8985,7 @@ export namespace Prisma {
     createdAt?: Date | string
     lastPostedAt?: Date | string | null
     user: UserCreateNestedOneWithoutProductsInput
+    rules?: AutoPostRuleCreateNestedManyWithoutProductsInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -8867,6 +8996,7 @@ export namespace Prisma {
     createdAt?: Date | string
     lastPostedAt?: Date | string | null
     userId: string
+    rules?: AutoPostRuleUncheckedCreateNestedManyWithoutProductsInput
   }
 
   export type ProductUpdateInput = {
@@ -8877,6 +9007,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutProductsNestedInput
+    rules?: AutoPostRuleUpdateManyWithoutProductsNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -8887,6 +9018,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userId?: StringFieldUpdateOperationsInput | string
+    rules?: AutoPostRuleUncheckedUpdateManyWithoutProductsNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -8929,6 +9061,7 @@ export namespace Prisma {
     nextRunAt?: Date | string | null
     lastRunAt?: Date | string | null
     user: UserCreateNestedOneWithoutRulesInput
+    products?: ProductCreateNestedManyWithoutRulesInput
   }
 
   export type AutoPostRuleUncheckedCreateInput = {
@@ -8942,6 +9075,7 @@ export namespace Prisma {
     nextRunAt?: Date | string | null
     lastRunAt?: Date | string | null
     userId: string
+    products?: ProductUncheckedCreateNestedManyWithoutRulesInput
   }
 
   export type AutoPostRuleUpdateInput = {
@@ -8955,6 +9089,7 @@ export namespace Prisma {
     nextRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutRulesNestedInput
+    products?: ProductUpdateManyWithoutRulesNestedInput
   }
 
   export type AutoPostRuleUncheckedUpdateInput = {
@@ -8968,6 +9103,7 @@ export namespace Prisma {
     nextRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userId?: StringFieldUpdateOperationsInput | string
+    products?: ProductUncheckedUpdateManyWithoutRulesNestedInput
   }
 
   export type AutoPostRuleCreateManyInput = {
@@ -9643,6 +9779,18 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type AutoPostRuleCreateNestedManyWithoutProductsInput = {
+    create?: XOR<AutoPostRuleCreateWithoutProductsInput, AutoPostRuleUncheckedCreateWithoutProductsInput> | AutoPostRuleCreateWithoutProductsInput[] | AutoPostRuleUncheckedCreateWithoutProductsInput[]
+    connectOrCreate?: AutoPostRuleCreateOrConnectWithoutProductsInput | AutoPostRuleCreateOrConnectWithoutProductsInput[]
+    connect?: AutoPostRuleWhereUniqueInput | AutoPostRuleWhereUniqueInput[]
+  }
+
+  export type AutoPostRuleUncheckedCreateNestedManyWithoutProductsInput = {
+    create?: XOR<AutoPostRuleCreateWithoutProductsInput, AutoPostRuleUncheckedCreateWithoutProductsInput> | AutoPostRuleCreateWithoutProductsInput[] | AutoPostRuleUncheckedCreateWithoutProductsInput[]
+    connectOrCreate?: AutoPostRuleCreateOrConnectWithoutProductsInput | AutoPostRuleCreateOrConnectWithoutProductsInput[]
+    connect?: AutoPostRuleWhereUniqueInput | AutoPostRuleWhereUniqueInput[]
+  }
+
   export type ProductUpdateimageUrlsInput = {
     set?: string[]
     push?: string | string[]
@@ -9656,10 +9804,48 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProductsInput, UserUpdateWithoutProductsInput>, UserUncheckedUpdateWithoutProductsInput>
   }
 
+  export type AutoPostRuleUpdateManyWithoutProductsNestedInput = {
+    create?: XOR<AutoPostRuleCreateWithoutProductsInput, AutoPostRuleUncheckedCreateWithoutProductsInput> | AutoPostRuleCreateWithoutProductsInput[] | AutoPostRuleUncheckedCreateWithoutProductsInput[]
+    connectOrCreate?: AutoPostRuleCreateOrConnectWithoutProductsInput | AutoPostRuleCreateOrConnectWithoutProductsInput[]
+    upsert?: AutoPostRuleUpsertWithWhereUniqueWithoutProductsInput | AutoPostRuleUpsertWithWhereUniqueWithoutProductsInput[]
+    set?: AutoPostRuleWhereUniqueInput | AutoPostRuleWhereUniqueInput[]
+    disconnect?: AutoPostRuleWhereUniqueInput | AutoPostRuleWhereUniqueInput[]
+    delete?: AutoPostRuleWhereUniqueInput | AutoPostRuleWhereUniqueInput[]
+    connect?: AutoPostRuleWhereUniqueInput | AutoPostRuleWhereUniqueInput[]
+    update?: AutoPostRuleUpdateWithWhereUniqueWithoutProductsInput | AutoPostRuleUpdateWithWhereUniqueWithoutProductsInput[]
+    updateMany?: AutoPostRuleUpdateManyWithWhereWithoutProductsInput | AutoPostRuleUpdateManyWithWhereWithoutProductsInput[]
+    deleteMany?: AutoPostRuleScalarWhereInput | AutoPostRuleScalarWhereInput[]
+  }
+
+  export type AutoPostRuleUncheckedUpdateManyWithoutProductsNestedInput = {
+    create?: XOR<AutoPostRuleCreateWithoutProductsInput, AutoPostRuleUncheckedCreateWithoutProductsInput> | AutoPostRuleCreateWithoutProductsInput[] | AutoPostRuleUncheckedCreateWithoutProductsInput[]
+    connectOrCreate?: AutoPostRuleCreateOrConnectWithoutProductsInput | AutoPostRuleCreateOrConnectWithoutProductsInput[]
+    upsert?: AutoPostRuleUpsertWithWhereUniqueWithoutProductsInput | AutoPostRuleUpsertWithWhereUniqueWithoutProductsInput[]
+    set?: AutoPostRuleWhereUniqueInput | AutoPostRuleWhereUniqueInput[]
+    disconnect?: AutoPostRuleWhereUniqueInput | AutoPostRuleWhereUniqueInput[]
+    delete?: AutoPostRuleWhereUniqueInput | AutoPostRuleWhereUniqueInput[]
+    connect?: AutoPostRuleWhereUniqueInput | AutoPostRuleWhereUniqueInput[]
+    update?: AutoPostRuleUpdateWithWhereUniqueWithoutProductsInput | AutoPostRuleUpdateWithWhereUniqueWithoutProductsInput[]
+    updateMany?: AutoPostRuleUpdateManyWithWhereWithoutProductsInput | AutoPostRuleUpdateManyWithWhereWithoutProductsInput[]
+    deleteMany?: AutoPostRuleScalarWhereInput | AutoPostRuleScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutRulesInput = {
     create?: XOR<UserCreateWithoutRulesInput, UserUncheckedCreateWithoutRulesInput>
     connectOrCreate?: UserCreateOrConnectWithoutRulesInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type ProductCreateNestedManyWithoutRulesInput = {
+    create?: XOR<ProductCreateWithoutRulesInput, ProductUncheckedCreateWithoutRulesInput> | ProductCreateWithoutRulesInput[] | ProductUncheckedCreateWithoutRulesInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutRulesInput | ProductCreateOrConnectWithoutRulesInput[]
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+  }
+
+  export type ProductUncheckedCreateNestedManyWithoutRulesInput = {
+    create?: XOR<ProductCreateWithoutRulesInput, ProductUncheckedCreateWithoutRulesInput> | ProductCreateWithoutRulesInput[] | ProductUncheckedCreateWithoutRulesInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutRulesInput | ProductCreateOrConnectWithoutRulesInput[]
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutRulesNestedInput = {
@@ -9668,6 +9854,32 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutRulesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRulesInput, UserUpdateWithoutRulesInput>, UserUncheckedUpdateWithoutRulesInput>
+  }
+
+  export type ProductUpdateManyWithoutRulesNestedInput = {
+    create?: XOR<ProductCreateWithoutRulesInput, ProductUncheckedCreateWithoutRulesInput> | ProductCreateWithoutRulesInput[] | ProductUncheckedCreateWithoutRulesInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutRulesInput | ProductCreateOrConnectWithoutRulesInput[]
+    upsert?: ProductUpsertWithWhereUniqueWithoutRulesInput | ProductUpsertWithWhereUniqueWithoutRulesInput[]
+    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    update?: ProductUpdateWithWhereUniqueWithoutRulesInput | ProductUpdateWithWhereUniqueWithoutRulesInput[]
+    updateMany?: ProductUpdateManyWithWhereWithoutRulesInput | ProductUpdateManyWithWhereWithoutRulesInput[]
+    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
+  }
+
+  export type ProductUncheckedUpdateManyWithoutRulesNestedInput = {
+    create?: XOR<ProductCreateWithoutRulesInput, ProductUncheckedCreateWithoutRulesInput> | ProductCreateWithoutRulesInput[] | ProductUncheckedCreateWithoutRulesInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutRulesInput | ProductCreateOrConnectWithoutRulesInput[]
+    upsert?: ProductUpsertWithWhereUniqueWithoutRulesInput | ProductUpsertWithWhereUniqueWithoutRulesInput[]
+    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    update?: ProductUpdateWithWhereUniqueWithoutRulesInput | ProductUpdateWithWhereUniqueWithoutRulesInput[]
+    updateMany?: ProductUpdateManyWithWhereWithoutRulesInput | ProductUpdateManyWithWhereWithoutRulesInput[]
+    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -10036,6 +10248,7 @@ export namespace Prisma {
     imageUrls?: ProductCreateimageUrlsInput | string[]
     createdAt?: Date | string
     lastPostedAt?: Date | string | null
+    rules?: AutoPostRuleCreateNestedManyWithoutProductsInput
   }
 
   export type ProductUncheckedCreateWithoutUserInput = {
@@ -10045,6 +10258,7 @@ export namespace Prisma {
     imageUrls?: ProductCreateimageUrlsInput | string[]
     createdAt?: Date | string
     lastPostedAt?: Date | string | null
+    rules?: AutoPostRuleUncheckedCreateNestedManyWithoutProductsInput
   }
 
   export type ProductCreateOrConnectWithoutUserInput = {
@@ -10067,6 +10281,7 @@ export namespace Prisma {
     status?: string
     nextRunAt?: Date | string | null
     lastRunAt?: Date | string | null
+    products?: ProductCreateNestedManyWithoutRulesInput
   }
 
   export type AutoPostRuleUncheckedCreateWithoutUserInput = {
@@ -10079,6 +10294,7 @@ export namespace Prisma {
     status?: string
     nextRunAt?: Date | string | null
     lastRunAt?: Date | string | null
+    products?: ProductUncheckedCreateNestedManyWithoutRulesInput
   }
 
   export type AutoPostRuleCreateOrConnectWithoutUserInput = {
@@ -10244,6 +10460,37 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
   }
 
+  export type AutoPostRuleCreateWithoutProductsInput = {
+    id?: string
+    ruleName: string
+    platform: string
+    scheduleTime: string
+    frequency: string
+    promptTemplate: string
+    status?: string
+    nextRunAt?: Date | string | null
+    lastRunAt?: Date | string | null
+    user: UserCreateNestedOneWithoutRulesInput
+  }
+
+  export type AutoPostRuleUncheckedCreateWithoutProductsInput = {
+    id?: string
+    ruleName: string
+    platform: string
+    scheduleTime: string
+    frequency: string
+    promptTemplate: string
+    status?: string
+    nextRunAt?: Date | string | null
+    lastRunAt?: Date | string | null
+    userId: string
+  }
+
+  export type AutoPostRuleCreateOrConnectWithoutProductsInput = {
+    where: AutoPostRuleWhereUniqueInput
+    create: XOR<AutoPostRuleCreateWithoutProductsInput, AutoPostRuleUncheckedCreateWithoutProductsInput>
+  }
+
   export type UserUpsertWithoutProductsInput = {
     update: XOR<UserUpdateWithoutProductsInput, UserUncheckedUpdateWithoutProductsInput>
     create: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
@@ -10281,6 +10528,22 @@ export namespace Prisma {
     rules?: AutoPostRuleUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type AutoPostRuleUpsertWithWhereUniqueWithoutProductsInput = {
+    where: AutoPostRuleWhereUniqueInput
+    update: XOR<AutoPostRuleUpdateWithoutProductsInput, AutoPostRuleUncheckedUpdateWithoutProductsInput>
+    create: XOR<AutoPostRuleCreateWithoutProductsInput, AutoPostRuleUncheckedCreateWithoutProductsInput>
+  }
+
+  export type AutoPostRuleUpdateWithWhereUniqueWithoutProductsInput = {
+    where: AutoPostRuleWhereUniqueInput
+    data: XOR<AutoPostRuleUpdateWithoutProductsInput, AutoPostRuleUncheckedUpdateWithoutProductsInput>
+  }
+
+  export type AutoPostRuleUpdateManyWithWhereWithoutProductsInput = {
+    where: AutoPostRuleScalarWhereInput
+    data: XOR<AutoPostRuleUpdateManyMutationInput, AutoPostRuleUncheckedUpdateManyWithoutProductsInput>
+  }
+
   export type UserCreateWithoutRulesInput = {
     id?: string
     name?: string | null
@@ -10310,6 +10573,31 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutRulesInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutRulesInput, UserUncheckedCreateWithoutRulesInput>
+  }
+
+  export type ProductCreateWithoutRulesInput = {
+    id?: string
+    name: string
+    description: string
+    imageUrls?: ProductCreateimageUrlsInput | string[]
+    createdAt?: Date | string
+    lastPostedAt?: Date | string | null
+    user: UserCreateNestedOneWithoutProductsInput
+  }
+
+  export type ProductUncheckedCreateWithoutRulesInput = {
+    id?: string
+    name: string
+    description: string
+    imageUrls?: ProductCreateimageUrlsInput | string[]
+    createdAt?: Date | string
+    lastPostedAt?: Date | string | null
+    userId: string
+  }
+
+  export type ProductCreateOrConnectWithoutRulesInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutRulesInput, ProductUncheckedCreateWithoutRulesInput>
   }
 
   export type UserUpsertWithoutRulesInput = {
@@ -10347,6 +10635,22 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ProductUpsertWithWhereUniqueWithoutRulesInput = {
+    where: ProductWhereUniqueInput
+    update: XOR<ProductUpdateWithoutRulesInput, ProductUncheckedUpdateWithoutRulesInput>
+    create: XOR<ProductCreateWithoutRulesInput, ProductUncheckedCreateWithoutRulesInput>
+  }
+
+  export type ProductUpdateWithWhereUniqueWithoutRulesInput = {
+    where: ProductWhereUniqueInput
+    data: XOR<ProductUpdateWithoutRulesInput, ProductUncheckedUpdateWithoutRulesInput>
+  }
+
+  export type ProductUpdateManyWithWhereWithoutRulesInput = {
+    where: ProductScalarWhereInput
+    data: XOR<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyWithoutRulesInput>
   }
 
   export type AccountCreateManyUserInput = {
@@ -10461,6 +10765,7 @@ export namespace Prisma {
     imageUrls?: ProductUpdateimageUrlsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rules?: AutoPostRuleUpdateManyWithoutProductsNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutUserInput = {
@@ -10470,6 +10775,7 @@ export namespace Prisma {
     imageUrls?: ProductUpdateimageUrlsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rules?: AutoPostRuleUncheckedUpdateManyWithoutProductsNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutUserInput = {
@@ -10491,6 +10797,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     nextRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    products?: ProductUpdateManyWithoutRulesNestedInput
   }
 
   export type AutoPostRuleUncheckedUpdateWithoutUserInput = {
@@ -10503,6 +10810,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     nextRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    products?: ProductUncheckedUpdateManyWithoutRulesNestedInput
   }
 
   export type AutoPostRuleUncheckedUpdateManyWithoutUserInput = {
@@ -10515,6 +10823,75 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     nextRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type AutoPostRuleUpdateWithoutProductsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ruleName?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    scheduleTime?: StringFieldUpdateOperationsInput | string
+    frequency?: StringFieldUpdateOperationsInput | string
+    promptTemplate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    nextRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutRulesNestedInput
+  }
+
+  export type AutoPostRuleUncheckedUpdateWithoutProductsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ruleName?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    scheduleTime?: StringFieldUpdateOperationsInput | string
+    frequency?: StringFieldUpdateOperationsInput | string
+    promptTemplate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    nextRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AutoPostRuleUncheckedUpdateManyWithoutProductsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ruleName?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    scheduleTime?: StringFieldUpdateOperationsInput | string
+    frequency?: StringFieldUpdateOperationsInput | string
+    promptTemplate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    nextRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProductUpdateWithoutRulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrls?: ProductUpdateimageUrlsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneRequiredWithoutProductsNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutRulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrls?: ProductUpdateimageUrlsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProductUncheckedUpdateManyWithoutRulesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrls?: ProductUpdateimageUrlsInput | string[]
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
 

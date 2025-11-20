@@ -99,6 +99,24 @@ export default async function HomePage() {
                 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Link
+                    href="/dashboard"
+                    className="group relative overflow-hidden rounded-xl bg-linear-to-br from-cyan-500 to-blue-600 p-6 text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 sm:col-span-2"
+                  >
+                    <div className="absolute right-0 top-0 h-32 w-32 translate-x-8 -translate-y-8 rounded-full bg-white/10 transition-transform group-hover:scale-150" />
+                    <div className="relative flex items-center gap-4">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-white/20">
+                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold">Tổng quan Dashboard</h3>
+                        <p className="text-sm text-blue-100">Xem thống kê và hoạt động</p>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <Link
                     href="/products"
                     className="group relative overflow-hidden rounded-xl bg-linear-to-br from-orange-500 to-pink-600 p-6 text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/50"
                   >
@@ -156,7 +174,7 @@ function SignInButton() {
     <form
       action={async () => {
         "use server";
-        await signIn("facebook", { redirectTo: "/products" });
+        await signIn("facebook", { redirectTo: "/dashboard" });
       }}
     >
       <button

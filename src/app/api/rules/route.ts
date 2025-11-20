@@ -10,6 +10,7 @@ interface CreateRuleBody {
   scheduleTime: string;
   frequency: string;
   promptTemplate: string;
+  productIds?: string[];
 }
 
 export async function POST(request: Request) {
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
 
   // 2. Lấy dữ liệu từ client gửi lên
   const body = (await request.json()) as CreateRuleBody;
-  const { ruleName, platform, scheduleTime, frequency, promptTemplate } = body;
+  const { ruleName, platform, scheduleTime, frequency, promptTemplate, productIds } = body;
 
   // 3. Validate (Kiểm tra dữ liệu đầu vào)
   if (!ruleName || !platform || !scheduleTime || !frequency || !promptTemplate) {
@@ -56,6 +57,9 @@ export async function POST(request: Request) {
         status: "ACTIVE",
         nextRunAt: nextRun, // Đặt lịch chạy lần đầu
         userId: session.user.id, // Liên kết với người dùng
+        products: productIds && productIds.length > 0 ? {
+          connect: productIds.map((id) => ({ id })),
+        } : undefined,
       },
     });
     // 6. Trả về thành công
