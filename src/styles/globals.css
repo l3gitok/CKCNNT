@@ -66,11 +66,7 @@
 .animate-gradient {
   background-size: 200% 200%;
   animation: gradient 6s ease infinite;
-}
-
-/* Smooth transitions */
-* {
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: background-position;
 }
 
 /* Custom scrollbar */
