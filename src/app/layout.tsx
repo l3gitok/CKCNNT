@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable}`}>
       <body>
         {children}
-        <SpeedInsights />
+        <SpeedInsights/>
       </body>
     </html>
   );
