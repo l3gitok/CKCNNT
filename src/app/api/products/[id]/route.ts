@@ -4,9 +4,9 @@ import { auth } from "~/server/auth";
 import { db } from "~/server/db";
 
 interface RouteContext {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // PATCH - Cập nhật sản phẩm
@@ -17,7 +17,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { id } = params;
+  const { id } = await params;
   const body = await request.json() as { name?: string; description?: string; imageUrls?: string[] };
 
   try {
@@ -60,7 +60,7 @@ export async function DELETE(request: Request, { params }: RouteContext) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     // Kiểm tra sản phẩm có tồn tại và thuộc về user không
