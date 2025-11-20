@@ -61,12 +61,11 @@ export const authConfig = {
         id: user.id,
       },
     }),
-
-   
-    // Callback này được gọi khi token được tạo (lúc đăng nhập)
-    async jwt({ token, account, user }) {
-      
-      // Chỉ chạy khi người dùng đăng nhập (hoặc đăng nhập lại) bằng Facebook
+  },
+  events: {
+    // Sự kiện này chạy bất đồng bộ sau khi đăng nhập thành công
+    async signIn({ user, account }) {
+      // Chỉ chạy khi người dùng đăng nhập bằng Facebook
       if (account?.provider === "facebook") {
         try {
           // 1. Lấy User Access Token (ngắn hạn)
@@ -84,16 +83,14 @@ export const authConfig = {
             const pageAccessToken = firstPage?.access_token;
             const pageId = firstPage?.id;
 
-            // 4. Lưu vào Database (n8n sẽ dùng cái này sau)
-            // 'user' object có sẵn khi đăng nhập lần đầu
-            if (user && pageAccessToken && pageId) {
+            // 4. Lưu vào Database
+            if (user.id && pageAccessToken && pageId) {
               await db.user.update({
                 where: { id: user.id },
                 data: {
-                  // TODO: Bạn nên mã hóa token này trước khi lưu!
                   encryptedPageToken: pageAccessToken,
                   pageId: pageId,
-                },  
+                },
               });
             }
           }
@@ -101,10 +98,6 @@ export const authConfig = {
           console.error("Lỗi khi lấy Page Access Token:", error);
         }
       }
-      
-      // Trả về token để NextAuth tiếp tục
-      return token;
     },
-
   },
 } satisfies NextAuthConfig;
