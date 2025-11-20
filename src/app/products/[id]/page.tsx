@@ -6,9 +6,9 @@ import Link from "next/link";
 import { ProductEditForm } from "./ProductEditForm";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export const metadata = {
@@ -23,8 +23,10 @@ export default async function ProductDetailPage({ params }: PageProps) {
     redirect("/");
   }
 
+  const { id } = await params;
+
   const product = await db.product.findUnique({
-    where: { id: params.id },
+    where: { id },
   });
 
   if (!product) {
