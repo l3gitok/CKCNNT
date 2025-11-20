@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../generated/prisma" // Giữ nguyên cấu hình output của bạn
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+// Necessary for Next auth
+model Account {
+    id                       String  @id @default(cuid())
+    userId                   String
+    type                     String
+    provider                 String
+    providerAccountId        String
+    refresh_token            String?
+    access_token             String?
+    expires_at               Int?
+    token_type               String?
+    scope                    String?
+    id_token                 String?
+    session_state            String?
+    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    refresh_token_expires_in Int?
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+
+    // --- BẮT ĐẦU THAY ĐỔI ---
+    // Thêm các trường này để lưu token Facebook
+    encryptedPageToken String?
+    pageId             String?
+
+    // Giữ lại của NextAuth
+    accounts      Account[]
+    sessions      Session[]
+
+    // Thêm quan hệ với Product và Rule (thay cho 'posts')
+    products     Product[]
+    rules        AutoPostRule[]
+    // --- KẾT THÚC THAY ĐỔI ---
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+// --- BẮT ĐẦU MODEL MỚI ---
+
+model Product {
+  id           String    @id @default(cuid())
+  name         String
+  description  String
+  imageUrls    String[] // Thay đổi từ imageUrl sang imageUrls (mảng)
+  createdAt    DateTime  @default(now()) // Thời gian tạo
+  lastPostedAt DateTime? // Dùng để xoay vòng sản phẩm
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+}
+
+model AutoPostRule {
+  id           String    @id @default(cuid())
+  ruleName     String
+  platform     String    // "FACEBOOK", "EMAIL"
+  scheduleTime String    // "09:00"
+  frequency    String    // "DAILY", "WEEKLY"
+  promptTemplate String
+  status       String    @default("ACTIVE")
+  
+  nextRunAt    DateTime? // Thời gian chạy tiếp theo
+  lastRunAt    DateTime? // Lần chạy cuối
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+}
+// --- KẾT THÚC MODEL MỚI ---
