@@ -526,15 +526,20 @@ export function ImageUploader({
                     ref={canvasRef}
                     className="hidden"
                   />
-                  <img
-                    src={images[currentImageIndex]?.preview}
-                    alt=""
+                  <Image
+                    src={images[currentImageIndex]?.preview ?? ""}
+                    alt="Preview"
+                    width={1200}
+                    height={800}
                     className="w-full h-auto"
                     style={{
                       filter: `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)`,
                       transform: `rotate(${rotation}deg)`,
                       transition: 'transform 0.3s ease',
+                      width: '100%',
+                      height: 'auto',
                     }}
+                    unoptimized
                   />
                 
                 {/* Khối cắt */}
