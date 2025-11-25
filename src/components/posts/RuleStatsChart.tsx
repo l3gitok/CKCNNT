@@ -94,40 +94,22 @@ export function RuleStatsChart({ posts }: RuleStatsChartProps) {
         <div className="rounded-xl border border-gray-100 bg-gray-50 p-4 lg:col-span-2">
           <h4 className="mb-3 text-sm font-semibold text-gray-700">Phân bố tương tác</h4>
           <div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-center">
-            <ResponsiveContainer width="100%" height={250} maxWidth={300}>
-              <PieChart>
-                <Pie
-                  data={pieChartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {pieChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value: number) => formatNumber(value)} />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-              {pieChartData.map((item, index) => {
-                const total = pieChartData.reduce((sum, d) => sum + d.value, 0);
-                const percentage = total > 0 ? ((item.value / total) * 100).toFixed(1) : "0";
-                return (
-                  <div key={item.name} className="rounded-lg border border-gray-200 bg-white p-3">
-                    <div className="mb-1 flex items-center gap-2">
-                      <div className="h-3 w-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
-                      <span className="text-xs font-medium text-gray-600">{item.name}</span>
-                    </div>
-                    <p className="text-lg font-bold text-gray-900">{formatNumber(item.value)}</p>
-                    <p className="text-xs text-gray-500">{percentage}% tổng</p>
-                  </div>
-                );
-              })}
+            {/* Wrap ResponsiveContainer in a div with maxWidth */}
+            <div style={{ maxWidth: 300, width: "100%" }}>
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie
+                    data={pieChartData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    fill="#8884d8"
+                    label
+                  />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>

@@ -85,7 +85,7 @@ export function RuleListManager({ initialRules, products = [] }: RuleListManager
 
   const handleTrigger = async (id: string, name: string, isActive: boolean, e: React.MouseEvent) => {
     e.stopPropagation();
-    
+
     if (!isActive) {
       alert("Vui lòng kích hoạt quy tắc trước khi đăng bài");
       return;
@@ -103,12 +103,19 @@ export function RuleListManager({ initialRules, products = [] }: RuleListManager
         body: JSON.stringify({ ruleId: id }),
       });
 
-      const data = await res.json();
+      // Define the expected structure of the response data
+      interface TriggerResponse {
+        error?: string;
+        details?: string;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const data: TriggerResponse = await res.json();
 
       if (!res.ok) {
-        const errorMsg = data.error || data.details || "Không thể trigger n8n";
-        // Hiển thị lỗi với format dễ đọc hơn (xử lý \n thành line breaks)
-        const formattedError = errorMsg.replace(/\\n/g, "\n");
+        const errorMsg = data.error ?? data.details ?? "Không thể trigger n8n";
+        // Ensure errorMsg is a string before calling .replace()
+        const formattedError = typeof errorMsg === "string" ? errorMsg.replace(/\\n/g, "\n") : errorMsg;
         throw new Error(formattedError);
       }
 
@@ -116,7 +123,6 @@ export function RuleListManager({ initialRules, products = [] }: RuleListManager
     } catch (error) {
       console.error(error);
       const errorMessage = error instanceof Error ? error.message : "Trigger n8n thất bại. Vui lòng thử lại.";
-      // Hiển thị alert với message có thể có nhiều dòng
       alert(errorMessage);
     } finally {
       setTriggeringRuleId(null);
