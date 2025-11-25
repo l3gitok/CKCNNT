@@ -7,11 +7,11 @@ import type { RulePreview } from "~/lib/rules/types";
 
 // Define the props type explicitly
 interface EditRulePageProps {
-  params: { id: string }; // Explicitly define the expected structure of params
+  params: Promise<{ id: string }>; // Adjusted to match the expected Promise type
 }
 
 export default async function EditRulePage({ params }: EditRulePageProps) {
-  const { id } = params;
+  const { id } = await params; // Await the params to resolve the Promise
   const session = await auth();
 
   if (!session?.user?.id) {
