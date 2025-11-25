@@ -5,7 +5,13 @@ import { db } from "~/server/db";
 import { RuleForm } from "~/components/rules/RuleForm";
 import type { RulePreview } from "~/lib/rules/types";
 
-export default async function EditRulePage({ params }: { params: { id: string } }) {
+type EditRulePageProps = {
+  params: {
+    id: string;
+  };
+};
+
+export default async function EditRulePage({ params }: EditRulePageProps): Promise<JSX.Element> {
   const { id } = params;
   const session = await auth();
 
@@ -30,28 +36,31 @@ export default async function EditRulePage({ params }: { params: { id: string } 
 
   try {
     [rule, products] = await Promise.all([
-      db.autoPostRule.findFirst({
-        where: { id, userId: session.user.id },
-        include: {
-          products: {
-            select: { id: true },
+      db.autoPostRule
+        .findFirst({
+          where: { id, userId: session.user.id },
+          include: {
+            products: {
+              select: { id: true },
+            },
           },
-        },
-      }).catch(() => null),
-      db.product.findMany({
-        where: { userId: session.user.id },
-        orderBy: { name: "asc" },
-        select: {
-          id: true,
-          name: true,
-          imageUrls: true,
-          description: true,
-        },
-      }).catch(() => []),
+        })
+        .catch(() => null),
+      db.product
+        .findMany({
+          where: { userId: session.user.id },
+          orderBy: { name: "asc" },
+          select: {
+            id: true,
+            name: true,
+            imageUrls: true,
+            description: true,
+          },
+        })
+        .catch(() => []),
     ]);
   } catch (error) {
     console.error("Database connection error:", error);
-    // rule sẽ là null, sẽ return notFound() ở dưới
   }
 
   if (!rule) return notFound();

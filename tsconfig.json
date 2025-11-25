@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     /* Base Options: */
+    "jsx": "preserve",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "target": "es2022",
