@@ -27,6 +27,7 @@ interface PostListManagerProps {
   initialPosts: Post[];
   rules: Rule[];
   userPageName?: string | null;
+  userPageId?: string | null; // Added userPageId to the interface
 }
 
 export function PostListManager({ initialPosts, rules, userPageName }: PostListManagerProps) {
