@@ -5,13 +5,12 @@ import { db } from "~/server/db";
 import { RuleForm } from "~/components/rules/RuleForm";
 import type { RulePreview } from "~/lib/rules/types";
 
-type EditRulePageProps = {
-  params: {
-    id: string;
-  };
-};
+// Define the props type explicitly
+interface EditRulePageProps {
+  params: { id: string }; // Explicitly define the expected structure of params
+}
 
-export default async function EditRulePage({ params }: EditRulePageProps): Promise<JSX.Element> {
+export default async function EditRulePage({ params }: EditRulePageProps) {
   const { id } = params;
   const session = await auth();
 
@@ -61,6 +60,7 @@ export default async function EditRulePage({ params }: EditRulePageProps): Promi
     ]);
   } catch (error) {
     console.error("Database connection error:", error);
+    // rule sẽ là null, sẽ return notFound() ở dưới
   }
 
   if (!rule) return notFound();
