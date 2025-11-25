@@ -44,7 +44,12 @@ export const authConfig = {
             "public_profile",
             "pages_manage_posts",    // Quyền đăng bài
             "pages_read_engagement", // Quyền đọc tương tác
-            "pages_show_list",       // Quyền xem danh sách Page
+            "pages_show_list",
+            "read_insights",
+            "business_management",
+            "pages_manage_metadata",
+            "pages_read_user_content",
+            "pages_manage_engagement",     
           ].join(" "),
         },
       },
