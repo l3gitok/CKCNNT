@@ -5,11 +5,8 @@ import { db } from "~/server/db";
 import { RuleForm } from "~/components/rules/RuleForm";
 import type { RulePreview } from "~/lib/rules/types";
 
-const resolveParams = async (params: { id: string } | Promise<{ id: string }>) =>
-  (params as Promise<{ id: string }>).then?.((value) => value) ?? (params as { id: string });
-
-export default async function EditRulePage({ params }: { params: { id: string } | Promise<{ id: string }> }) {
-  const { id } = await resolveParams(params);
+export default async function EditRulePage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const session = await auth();
 
   if (!session?.user?.id) {
