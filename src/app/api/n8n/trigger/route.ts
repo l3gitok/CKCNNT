@@ -3,6 +3,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "~/server/auth";
 import { db } from "~/server/db";
+export const runtime = "nodejs"; // Đảm bảo sử dụng runtime nodejs
 
 // POST: Trigger n8n webhook với rule cụ thể
 export async function POST(request: Request) {

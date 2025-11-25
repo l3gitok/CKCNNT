@@ -26,11 +26,10 @@ interface Post {
 interface PostListManagerProps {
   initialPosts: Post[];
   rules: Rule[];
-  userPageId?: string | null;
   userPageName?: string | null;
 }
 
-export function PostListManager({ initialPosts, rules, userPageId, userPageName }: PostListManagerProps) {
+export function PostListManager({ initialPosts, rules, userPageName }: PostListManagerProps) {
   const router = useRouter();
   const [posts, setPosts] = useState(initialPosts);
   const [searchTerm, setSearchTerm] = useState("");

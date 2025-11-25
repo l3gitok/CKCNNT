@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie } from "recharts";
 
 interface Post {
   id: string;
@@ -14,8 +14,6 @@ interface Post {
 interface RuleStatsChartProps {
   posts: Post[];
 }
-
-const COLORS = ["#3b82f6", "#8b5cf6", "#10b981", "#f59e0b"];
 
 export function RuleStatsChart({ posts }: RuleStatsChartProps) {
   const formatNumber = (num: number) => {

@@ -1,7 +1,6 @@
     // src/app/api/n8n/webhook/route.ts
     // Webhook endpoint để trigger n8n workflow (nếu cần)
     import { NextResponse } from "next/server";
-
     // POST: Trigger n8n workflow (nếu bạn muốn hệ thống gọi n8n thay vì n8n poll)
     export async function POST(request: Request) {
       const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
