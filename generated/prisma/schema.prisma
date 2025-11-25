@@ -58,6 +58,7 @@ model User {
   // Thêm quan hệ với Product và Rule (thay cho 'posts')
   products Product[]
   rules    AutoPostRule[]
+  posts    Post[] // Quan hệ với bài đăng
   // --- KẾT THÚC THAY ĐỔI ---
 }
 
@@ -93,6 +94,7 @@ model AutoPostRule {
   frequency      String // "DAILY", "WEEKLY"
   promptTemplate String
   status         String @default("ACTIVE")
+  preview        Json? // Lưu cache preview mới nhất của rule
 
   nextRunAt DateTime? // Thời gian chạy tiếp theo
   lastRunAt DateTime? // Lần chạy cuối
@@ -101,6 +103,34 @@ model AutoPostRule {
   userId String
 
   products Product[]
+  posts    Post[] // Quan hệ với bài đăng
+}
+
+model Post {
+  id           String    @id @default(cuid())
+  postUrl      String? // URL bài đăng trên Facebook Page/Email
+  pageId       String? // ID của Facebook Page (từ user.pageId)
+  pageName     String? // Tên Facebook Page (để hiển thị)
+  views        Int       @default(0) // Lượt xem
+  interactions Int       @default(0) // Tổng tương tác (like, love, etc.)
+  shares       Int       @default(0) // Lượt chia sẻ
+  comments     Int       @default(0) // Số lượng comment
+  createdAt    DateTime  @default(now()) // Thời gian tạo bài đăng
+  updatedAt    DateTime  @updatedAt // Thời gian cập nhật cuối
+  lastSyncedAt DateTime? // Lần cuối đồng bộ dữ liệu từ Graph API
+
+  // Quan hệ với quy tắc
+  rule   AutoPostRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  ruleId String
+
+  // Quan hệ với user (để dễ query)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@index([ruleId])
+  @@index([userId])
+  @@index([createdAt])
+  @@index([pageId])
 }
 
 // --- KẾT THÚC MODEL MỚI ---

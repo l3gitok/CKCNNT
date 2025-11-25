@@ -178,14 +178,36 @@ exports.Prisma.AutoPostRuleScalarFieldEnum = {
   frequency: 'frequency',
   promptTemplate: 'promptTemplate',
   status: 'status',
+  preview: 'preview',
   nextRunAt: 'nextRunAt',
   lastRunAt: 'lastRunAt',
+  userId: 'userId'
+};
+
+exports.Prisma.PostScalarFieldEnum = {
+  id: 'id',
+  postUrl: 'postUrl',
+  pageId: 'pageId',
+  pageName: 'pageName',
+  views: 'views',
+  interactions: 'interactions',
+  shares: 'shares',
+  comments: 'comments',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  lastSyncedAt: 'lastSyncedAt',
+  ruleId: 'ruleId',
   userId: 'userId'
 };
 
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -198,6 +220,12 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
 
 exports.Prisma.ModelName = {
   Account: 'Account',
@@ -205,7 +233,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   VerificationToken: 'VerificationToken',
   Product: 'Product',
-  AutoPostRule: 'AutoPostRule'
+  AutoPostRule: 'AutoPostRule',
+  Post: 'Post'
 };
 
 /**

@@ -17,6 +17,11 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
+    N8N_API_KEY: z.string().optional(),
+    N8N_WEBHOOK_URL: z.string().url().optional(),
+    OPENAI_API_KEY: z.string().optional(),
+    CRON_SECRET: z.string().optional(),
+    FB_GRAPH_VERSION: z.string().optional(),
   },
 
   /**
@@ -38,6 +43,11 @@ export const env = createEnv({
     FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
+    N8N_API_KEY: process.env.N8N_API_KEY,
+    N8N_WEBHOOK_URL: process.env.N8N_WEBHOOK_URL,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    CRON_SECRET: process.env.CRON_SECRET,
+    FB_GRAPH_VERSION: process.env.FB_GRAPH_VERSION,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

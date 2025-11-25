@@ -1,7 +1,9 @@
 // src/app/api/rules/route.ts
 import { NextResponse } from "next/server";
+import { Prisma } from "~/../generated/prisma";
 import { auth } from "~/server/auth"; // Import hàm auth
 import { db } from "~/server/db";
+import type { RulePreview } from "~/lib/rules/types";
 
 // Type cho request body
 interface CreateRuleBody {
@@ -11,6 +13,7 @@ interface CreateRuleBody {
   frequency: string;
   promptTemplate: string;
   productIds?: string[];
+  preview?: RulePreview | null;
 }
 
 export async function POST(request: Request) {
@@ -23,7 +26,7 @@ export async function POST(request: Request) {
 
   // 2. Lấy dữ liệu từ client gửi lên
   const body = (await request.json()) as CreateRuleBody;
-  const { ruleName, platform, scheduleTime, frequency, promptTemplate, productIds } = body;
+  const { ruleName, platform, scheduleTime, frequency, promptTemplate, productIds, preview } = body;
 
   // 3. Validate (Kiểm tra dữ liệu đầu vào)
   if (!ruleName || !platform || !scheduleTime || !frequency || !promptTemplate) {
@@ -57,6 +60,7 @@ export async function POST(request: Request) {
         status: "ACTIVE",
         nextRunAt: nextRun, // Đặt lịch chạy lần đầu
         userId: session.user.id, // Liên kết với người dùng
+        preview: preview === null ? Prisma.JsonNull : (preview as Prisma.InputJsonValue | undefined),
         products: productIds && productIds.length > 0 ? {
           connect: productIds.map((id) => ({ id })),
         } : undefined,

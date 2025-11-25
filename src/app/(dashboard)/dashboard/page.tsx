@@ -1,5 +1,7 @@
 import { auth } from "~/server/auth";
-import Link from "next/link";
+import { db } from "~/server/db";
+import { DashboardStats } from "~/components/dashboard/DashboardStats";
+import { DashboardCharts } from "~/components/dashboard/DashboardCharts";
 
 export const metadata = {
   title: "Tổng quan - Auto Marketing",
@@ -9,65 +11,83 @@ export const metadata = {
 export default async function DashboardPage() {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session?.user?.id) {
     return (
       <main className="container mx-auto p-4">
         <p>Bạn cần đăng nhập để xem trang này.</p>
-        <Link href="/" className="text-blue-600">Quay về trang chủ</Link>
       </main>
     );
   }
 
+  // Lấy thống kê với error handling
+  let productsCount = 0;
+  let rulesCount = 0;
+  let postsDataResult: Array<{ postUrl: string | null; views: number; interactions: number; shares: number; comments: number }> = [];
+
+  try {
+    [productsCount, rulesCount, postsDataResult] = await Promise.all([
+      db.product.count({
+        where: { userId: session.user.id },
+      }).catch(() => 0),
+      db.autoPostRule.count({
+        where: { userId: session.user.id },
+      }).catch(() => 0),
+      // Lấy posts (nếu model tồn tại)
+      (async () => {
+        try {
+          const dbAny = db as unknown as Record<string, { findMany: (args: unknown) => Promise<Array<{ postUrl: string | null; views: number; interactions: number; shares: number; comments: number }>> } | undefined>;
+          const postModel = dbAny.post;
+          if (postModel) {
+            return await postModel.findMany({
+              where: { userId: session.user.id },
+              select: {
+                postUrl: true,
+                views: true,
+                interactions: true,
+                shares: true,
+                comments: true,
+              },
+            });
+          }
+          return [];
+        } catch (error) {
+          console.error("Error fetching posts:", error);
+          return [];
+        }
+      })(),
+    ]);
+  } catch (error) {
+    console.error("Database connection error:", error);
+    // Sử dụng giá trị mặc định nếu không kết nối được database
+  }
+
+  // Đảm bảo postsData luôn là array
+  const postsData = Array.isArray(postsDataResult) ? postsDataResult : [];
+
+  // Đếm số bài đăng (theo URL)
+  const postsCount = postsData.filter((post) => post.postUrl !== null).length;
+
+  // Tính tổng thống kê
+  const totalStats = postsData.reduce(
+    (acc, post) => ({
+      views: acc.views + post.views,
+      interactions: acc.interactions + post.interactions,
+      shares: acc.shares + post.shares,
+      comments: acc.comments + post.comments,
+    }),
+    { views: 0, interactions: 0, shares: 0, comments: 0 }
+  );
+
   return (
-    <>
+    <div className="p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Xin chào, {session.user.name}!</h1>
-        <p className="text-gray-600">Chào mừng bạn quay trở lại bảng điều khiển.</p>
+        <h1 className="text-3xl font-bold text-gray-900">Xin chào, {session.user.name ?? "Người dùng"}!</h1>
+        <p className="mt-1 text-gray-600">Chào mừng bạn quay trở lại bảng điều khiển.</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {/* Stat Card 1 */}
-        <div className="rounded-2xl bg-white p-6 shadow-lg shadow-pink-500/10 transition-all hover:shadow-pink-500/20">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-700">Sản phẩm</h3>
-            <div className="rounded-full bg-orange-100 p-2 text-orange-600">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-            </div>
-          </div>
-          <p className="text-3xl font-bold text-gray-900">--</p>
-          <p className="text-sm text-gray-500">Sản phẩm đang quản lý</p>
-        </div>
+      <DashboardStats productsCount={productsCount} rulesCount={rulesCount} postsCount={postsCount} />
 
-        {/* Stat Card 2 */}
-        <div className="rounded-2xl bg-white p-6 shadow-lg shadow-pink-500/10 transition-all hover:shadow-pink-500/20">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-700">Bài đăng</h3>
-            <div className="rounded-full bg-pink-100 p-2 text-pink-600">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-            </div>
-          </div>
-          <p className="text-3xl font-bold text-gray-900">--</p>
-          <p className="text-sm text-gray-500">Bài đã đăng trong tháng</p>
-        </div>
-
-        {/* Stat Card 3 */}
-        <div className="rounded-2xl bg-white p-6 shadow-lg shadow-pink-500/10 transition-all hover:shadow-pink-500/20">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-700">Quy tắc</h3>
-            <div className="rounded-full bg-purple-100 p-2 text-purple-600">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-            </div>
-          </div>
-          <p className="text-3xl font-bold text-gray-900">--</p>
-          <p className="text-sm text-gray-500">Quy tắc đang hoạt động</p>
-        </div>
-      </div>
-    </>
+      <DashboardCharts totalStats={totalStats} postsData={postsData} />
+    </div>
   );
 }
