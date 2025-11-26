@@ -264,7 +264,30 @@ export function RuleForm({ initialData, products = [], onSuccess, onCancel }: Ru
               className="mt-1 w-full rounded-xl border border-gray-200 bg-gray-50 p-3 font-mono text-sm focus:border-purple-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-100"
               placeholder="Dùng [PRODUCT_NAME], [PRODUCT_DESC], [RULE_NAME], [SCHEDULE_TIME]..."
             />
-            <p className="mt-2 text-xs text-gray-500">Hỗ trợ các biến: [PRODUCT_NAME], [PRODUCT_DESC], [RULE_NAME], [PLATFORM], [SCHEDULE_TIME], [FREQUENCY], [STATUS].</p>
+            <p className="mt-2 text-xs text-gray-500">
+              <strong>Khung prompt AI marketing cho Facebook Page</strong><br /><br />
+              Bạn là một copywriter chuyên nghiệp & giàu sáng tạo đang làm việc cho một thương hiệu bán {'{product_type}'}. Viết cho tôi một bài post Facebook Page gồm 2–3 đoạn ngắn, nội dung hướng tới việc thuyết phục “{'{target_audience}'}” mua {'{product_name}'}. Bài viết cần:<br /><br />
+              Giới thiệu lợi ích nổi bật nhất của {'{product_name}'} theo cách gần gũi, dễ hiểu.<br />
+              Tạo nhu cầu ngay: nhấn mạnh vấn đề / nhu cầu mà khách hàng đang gặp (pain point / desire).<br />
+              Đưa ra lời hứa/giá trị (value proposition) rõ ràng: {'{main_value}'}.<br />
+              (Nếu có) Thêm bằng chứng xã hội: đánh giá, số liệu, cảm nhận khách hàng, hay minh hoạ tính hữu dụng.<br />
+              Khuyến khích hành động: kêu gọi “Đặt hàng ngay”, “Inbox để được tư vấn”, “Chỉ còn X sản phẩm”, “Ưu đãi nhân dịp …”.<br />
+              Tone phù hợp với đối tượng (ví dụ: thân thiện & gần gũi nếu là consumer; chuyên nghiệp & tin cậy nếu B2B).<br />
+              Đề xuất hashtag / emoji / CTA ngắn gọn phù hợp post Facebook.<br /><br />
+              <strong>Thông tin bạn cần chuẩn bị đầu vào:</strong><br />
+              {'{product_name}'} — tên sản phẩm<br />
+              {'{product_type}'} — dòng / loại sản phẩm<br />
+              {'{target_audience}'} — ai là khách hàng mục tiêu<br />
+              {'{main_value}'} — giá trị / lợi ích chính bạn muốn nhấn mạnh (tiện lợi, tiết kiệm, sang – xịn – mịn, giải quyết pain point …)<br />
+              (Tuỳ chọn) {'{social_proof}'} — đánh giá / feedback / con số + ưu đãi / giảm giá / thời gian khuyến mãi<br /><br />
+              <strong>3 “cơ hội & sự kiện” đáng khai thác marketing hôm nay</strong><br /><br />
+              <u>Không khí săn sale cuối tháng + chuẩn bị mùa lễ sắp tới</u><br />
+              — Sau đợt khuyến mãi Black Friday/Black November vừa qua, nhiều người đang “cân nhắc mua sắm” thêm — đây là thời điểm tốt để tung ưu đãi gói cuối tháng, hoặc “tăng đơn” trước Giáng sinh.<br /><br />
+              <u>Tâm lý “sắm sửa cuối năm – quà tặng & thay đổi phong cách”</u><br />
+              — Cuối năm là lúc người ta muốn sắm mới: quà tặng, đồ dùng cá nhân, phụ kiện, làm mới nhà cửa… Nếu sản phẩm của bạn có thể liên kết với nhu cầu này thì dễ kích thích mua.<br /><br />
+              <u>Thời điểm “thu nhập ổn định / nhận lương cuối tháng” — tăng chi tiêu tiêu dùng</u><br />
+              — Nhiều người nhận lương tháng vào cuối hoặc cuối tuần của tháng. Đây là cơ hội để đưa ra các gói ưu đãi “giá tốt”, khiến khách dễ quyết định mua hơn.<br />
+            </p>
           </div>
 
           <div className="rounded-2xl border border-dashed border-gray-200 bg-gray-50/60 p-4">
