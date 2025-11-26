@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line} from "recharts";
 
 interface Post {
   id: string;
@@ -10,18 +10,15 @@ interface Post {
   comments: number;
   createdAt: Date;
 }
-
 interface RuleStatsChartProps {
   posts: Post[];
 }
-
 export function RuleStatsChart({ posts }: RuleStatsChartProps) {
   const formatNumber = (num: number) => {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
     if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
     return num.toString();
   };
-
   // Dữ liệu cho biểu đồ cột - so sánh các bài đăng
   const barChartData = posts.map((post, index) => ({
     name: `Bài ${index + 1}`,
@@ -41,14 +38,6 @@ export function RuleStatsChart({ posts }: RuleStatsChartProps) {
     }),
     { views: 0, interactions: 0, shares: 0, comments: 0 }
   );
-
-  const pieChartData = [
-    { name: "Lượt xem", value: totalStats.views },
-    { name: "Tương tác", value: totalStats.interactions },
-    { name: "Chia sẻ", value: totalStats.shares },
-    { name: "Bình luận", value: totalStats.comments },
-  ].filter((item) => item.value > 0);
-
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       {/* Biểu đồ cột - So sánh các bài đăng */}
@@ -86,32 +75,6 @@ export function RuleStatsChart({ posts }: RuleStatsChartProps) {
           </LineChart>
         </ResponsiveContainer>
       </div>
-
-      {/* Biểu đồ tròn - Phân bố */}
-      {pieChartData.length > 0 && (
-        <div className="rounded-xl border border-gray-100 bg-gray-50 p-4 lg:col-span-2">
-          <h4 className="mb-3 text-sm font-semibold text-gray-700">Phân bố tương tác</h4>
-          <div className="flex flex-col items-center gap-4 lg:flex-row lg:justify-center">
-            {/* Wrap ResponsiveContainer in a div with maxWidth */}
-            <div style={{ maxWidth: 300, width: "100%" }}>
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie
-                    data={pieChartData}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    fill="#8884d8"
-                    label
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
