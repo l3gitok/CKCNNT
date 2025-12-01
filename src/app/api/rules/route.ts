@@ -43,10 +43,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Định dạng thời gian không hợp lệ" }, { status: 400 });
   }
   
-  // Tính toán ngày chạy tiếp theo
+  // Tính toán ngày chạy tiếp theo (UTC)
   const nextRun = new Date();
-  nextRun.setDate(now.getDate() + 1); // Đặt là ngày mai
-  nextRun.setHours(hours, minutes, 0, 0); // Đặt giờ và phút
+  nextRun.setUTCDate(now.getUTCDate() + 1); // Đặt là ngày mai theo UTC
+  nextRun.setUTCHours(hours, minutes, 0, 0); // Đặt giờ và phút theo UTC
 
   // 5. Lưu vào Database (Supabase)
   try {
