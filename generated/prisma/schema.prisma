@@ -1,9 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma" // Giữ nguyên cấu hình output của bạn
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -11,7 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Necessary for Next auth
 model Account {
   id                       String  @id @default(cuid())
   userId                   String
@@ -25,8 +21,8 @@ model Account {
   scope                    String?
   id_token                 String?
   session_state            String?
-  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   refresh_token_expires_in Int?
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -40,26 +36,18 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-
-  // --- BẮT ĐẦU THAY ĐỔI ---
-  // Thêm các trường này để lưu token Facebook
+  id                 String         @id @default(cuid())
+  name               String?
+  email              String?        @unique
+  emailVerified      DateTime?
+  image              String?
   encryptedPageToken String?
   pageId             String?
-
-  // Giữ lại của NextAuth
-  accounts Account[]
-  sessions Session[]
-
-  // Thêm quan hệ với Product và Rule (thay cho 'posts')
-  products Product[]
-  rules    AutoPostRule[]
-  posts    Post[] // Quan hệ với bài đăng
-  // --- KẾT THÚC THAY ĐỔI ---
+  accounts           Account[]
+  rules              AutoPostRule[]
+  posts              Post[]
+  products           Product[]
+  sessions           Session[]
 }
 
 model VerificationToken {
@@ -70,67 +58,55 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// --- BẮT ĐẦU MODEL MỚI ---
-
 model Product {
-  id           String    @id @default(cuid())
-  name         String
-  description  String
-  imageUrls    String[] // Thay đổi từ imageUrl sang imageUrls (mảng)
-  createdAt    DateTime  @default(now()) // Thời gian tạo
-  lastPostedAt DateTime? // Dùng để xoay vòng sản phẩm
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  rules AutoPostRule[]
+  id              String         @id @default(cuid())
+  name            String
+  description     String
+  imageUrls       String[]
+  createdAt       DateTime       @default(now())
+  lastPostedAt    DateTime?
+  userId          String
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rules           AutoPostRule[] @relation("AutoPostRuleToProduct")
+  infographicLink String?        @map("infographic_link")
 }
 
 model AutoPostRule {
-  id             String @id @default(cuid())
+  id             String    @id @default(cuid())
   ruleName       String
-  platform       String // "FACEBOOK", "EMAIL"
-  scheduleTime   String // "09:00"
-  frequency      String // "DAILY", "WEEKLY"
+  platform       String
+  scheduleTime   String
+  frequency      String
   promptTemplate String
-  status         String @default("ACTIVE")
-  preview        Json? // Lưu cache preview mới nhất của rule
-
-  nextRunAt DateTime? // Thời gian chạy tiếp theo
-  lastRunAt DateTime? // Lần chạy cuối
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  products Product[]
-  posts    Post[] // Quan hệ với bài đăng
+  status         String    @default("ACTIVE")
+  preview        Json?
+  nextRunAt      DateTime?
+  lastRunAt      DateTime?
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  posts          Post[]
+  products       Product[] @relation("AutoPostRuleToProduct")
 }
 
 model Post {
-  id           String    @id @default(cuid())
-  postUrl      String? // URL bài đăng trên Facebook Page/Email
-  pageId       String? // ID của Facebook Page (từ user.pageId)
-  pageName     String? // Tên Facebook Page (để hiển thị)
-  views        Int       @default(0) // Lượt xem
-  interactions Int       @default(0) // Tổng tương tác (like, love, etc.)
-  shares       Int       @default(0) // Lượt chia sẻ
-  comments     Int       @default(0) // Số lượng comment
-  createdAt    DateTime  @default(now()) // Thời gian tạo bài đăng
-  updatedAt    DateTime  @updatedAt // Thời gian cập nhật cuối
-  lastSyncedAt DateTime? // Lần cuối đồng bộ dữ liệu từ Graph API
-
-  // Quan hệ với quy tắc
-  rule   AutoPostRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
-  ruleId String
-
-  // Quan hệ với user (để dễ query)
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  id           String       @id @default(cuid())
+  postUrl      String?
+  pageId       String?
+  pageName     String?
+  views        Int          @default(0)
+  interactions Int          @default(0)
+  shares       Int          @default(0)
+  comments     Int          @default(0)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  lastSyncedAt DateTime?
+  ruleId       String
+  userId       String
+  rule         AutoPostRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([ruleId])
   @@index([userId])
   @@index([createdAt])
   @@index([pageId])
 }
-
-// --- KẾT THÚC MODEL MỚI ---

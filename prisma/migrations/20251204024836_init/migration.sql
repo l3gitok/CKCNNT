@@ -56,6 +56,7 @@ CREATE TABLE "Product" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "lastPostedAt" TIMESTAMP(3),
     "userId" TEXT NOT NULL,
+    "infographic_link" TEXT,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );

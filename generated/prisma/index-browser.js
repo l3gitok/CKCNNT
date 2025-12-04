@@ -167,7 +167,8 @@ exports.Prisma.ProductScalarFieldEnum = {
   imageUrls: 'imageUrls',
   createdAt: 'createdAt',
   lastPostedAt: 'lastPostedAt',
-  userId: 'userId'
+  userId: 'userId',
+  infographicLink: 'infographicLink'
 };
 
 exports.Prisma.AutoPostRuleScalarFieldEnum = {
