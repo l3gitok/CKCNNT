@@ -112,12 +112,28 @@ export async function POST(request: Request) {
         });
 
         if (existingRule) {
+          const dataToUpdate: Prisma.AutoPostRuleUpdateInput = {
+            preview: previewData as Prisma.InputJsonValue,
+          };
+
+          if (scheduleTime) {
+            const [hours, minutes] = scheduleTime.split(':').map(Number);
+            if (hours !== undefined && minutes !== undefined && !isNaN(hours) && !isNaN(minutes)) {
+              dataToUpdate.scheduleTime = scheduleTime;
+              
+              // Tính toán nextRunAt theo UTC (VN - 7)
+              const now = new Date();
+              const nextRun = new Date();
+              nextRun.setUTCDate(now.getUTCDate() + 1);
+              nextRun.setUTCHours(hours - 7, minutes, 0, 0);
+              dataToUpdate.nextRunAt = nextRun;
+            }
+          }
+
           // Lưu preview vào database
           await db.autoPostRule.update({
             where: { id: body.ruleId },
-            data: {
-              preview: previewData as Prisma.InputJsonValue,
-            },
+            data: dataToUpdate,
           });
         }
       } catch (error) {

@@ -37,7 +37,20 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
 
     if (ruleName !== undefined) data.ruleName = ruleName;
     if (platform !== undefined) data.platform = platform;
-    if (scheduleTime !== undefined) data.scheduleTime = scheduleTime;
+    if (scheduleTime !== undefined) {
+      const [hours, minutes] = scheduleTime.split(':').map(Number);
+      if (hours === undefined || minutes === undefined || isNaN(hours) || isNaN(minutes)) {
+        return NextResponse.json({ error: "Định dạng thời gian không hợp lệ" }, { status: 400 });
+      }
+      data.scheduleTime = scheduleTime;
+
+      // Recalculate nextRunAt in UTC
+      const now = new Date();
+      const nextRun = new Date();
+      nextRun.setUTCDate(now.getUTCDate() + 1);
+      nextRun.setUTCHours(hours - 7, minutes, 0, 0); // VN time -> UTC
+      data.nextRunAt = nextRun;
+    }
     if (frequency !== undefined) data.frequency = frequency;
     if (promptTemplate !== undefined) data.promptTemplate = promptTemplate;
     if (status !== undefined) data.status = status;

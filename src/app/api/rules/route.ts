@@ -46,7 +46,7 @@ export async function POST(request: Request) {
   // Tính toán ngày chạy tiếp theo (UTC)
   const nextRun = new Date();
   nextRun.setUTCDate(now.getUTCDate() + 1); // Đặt là ngày mai theo UTC
-  nextRun.setUTCHours(hours, minutes, 0, 0); // Đặt giờ và phút theo UTC
+  nextRun.setUTCHours(hours - 7, minutes, 0, 0); // Đặt giờ và phút theo UTC (VN - 7)
 
   // 5. Lưu vào Database (Supabase)
   try {
