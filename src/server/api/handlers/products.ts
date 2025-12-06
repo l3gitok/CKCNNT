@@ -51,7 +51,6 @@ export async function DELETE(
 
 // --- Handlers ---
 
-// From src/app/api/products/route.ts
 async function handleCreateProduct(request: Request) {
   const session = await auth(); // Lấy session từ server
 
@@ -91,7 +90,6 @@ async function handleCreateProduct(request: Request) {
   }
 }
 
-// From src/app/api/products/route.ts
 async function handleDeleteProductByQuery(request: Request) {
   const session = await auth();
 
@@ -134,7 +132,6 @@ async function handleDeleteProductByQuery(request: Request) {
   }
 }
 
-// From src/app/api/products/[id]/route.ts
 async function handleUpdateProduct(request: Request, id: string) {
   const session = await auth();
 
@@ -176,7 +173,6 @@ async function handleUpdateProduct(request: Request, id: string) {
   }
 }
 
-// From src/app/api/products/[id]/route.ts
 async function handleDeleteProductById(request: Request, id: string) {
   const session = await auth();
 

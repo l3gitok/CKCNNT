@@ -54,7 +54,6 @@ export async function DELETE(
 
 // --- Handlers ---
 
-// From src/app/api/rules/route.ts
 async function handleCreateRule(request: Request) {
   const session = await auth();
 
@@ -122,7 +121,6 @@ async function handleCreateRule(request: Request) {
   }
 }
 
-// From src/app/api/rules/preview/route.ts
 async function handlePreviewRule(request: Request) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -225,7 +223,6 @@ async function handlePreviewRule(request: Request) {
   }
 }
 
-// From src/app/api/rules/[id]/route.ts
 async function handleUpdateRule(request: Request, id: string) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -301,27 +298,26 @@ async function handleUpdateRule(request: Request, id: string) {
   }
 }
 
-// From src/app/api/rules/[id]/route.ts
 async function handleDeleteRule(request: Request, id: string) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    const rule = await db.autoPostRule.findFirst({
+    const existingRule = await db.autoPostRule.findFirst({
       where: { id, userId: session.user.id },
-      select: { id: true },
     });
 
-    if (!rule) {
+    if (!existingRule) {
       return NextResponse.json({ error: "Không tìm thấy quy tắc" }, { status: 404 });
     }
 
     await db.autoPostRule.delete({
-      where: { id: rule.id },
+      where: { id },
     });
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Delete rule error:", error);
-    return NextResponse.json({ error: "Lỗi xóa" }, { status: 500 });
+    return NextResponse.json({ error: "Lỗi xóa quy tắc" }, { status: 500 });
   }
 }

@@ -24,6 +24,22 @@ const config = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/posts/:path*',
+        destination: '/api/v1/posts/:path*',
+      },
+      {
+        source: '/api/products/:path*',
+        destination: '/api/v1/products/:path*',
+      },
+      {
+        source: '/api/rules/:path*',
+        destination: '/api/v1/rules/:path*',
+      },
+    ];
+  },
 };
 
 export default config;

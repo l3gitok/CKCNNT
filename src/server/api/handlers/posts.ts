@@ -71,7 +71,6 @@ export async function DELETE(
 
 // --- Handlers ---
 
-// From src/app/api/posts/route.ts
 async function handleGetPosts(request: Request) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -114,7 +113,6 @@ async function handleGetPosts(request: Request) {
   }
 }
 
-// From src/app/api/posts/route.ts
 async function handleCreatePost(request: Request) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -185,13 +183,11 @@ async function handleCreatePost(request: Request) {
   }
 }
 
-// From src/app/api/posts/sync/route.ts
 async function handleSyncPosts(request: Request) {
   const SYNC_INTERVAL_MS = 10 * 60 * 1000; // 10 phút
   const MAX_POSTS_PER_RUN = 20;
   const GRAPH_VERSION = process.env.FB_GRAPH_VERSION;
 
-  // Interface cho dữ liệu trả về từ Facebook
   interface GraphResponse {
     id: string;
     from?: { name: string };
@@ -206,25 +202,22 @@ async function handleSyncPosts(request: Request) {
     };
   }
 
-  // 1. Bảo mật Cron Job
-  // Vercel sẽ tự động gửi header Authorization: Bearer <CRON_SECRET>
   const authHeader = request.headers.get("authorization");
   if (authHeader !== `Bearer ${env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    // 2. Tìm các bài viết cần cập nhật
     const cutoffTime = new Date(Date.now() - SYNC_INTERVAL_MS);
 
     const postsToSync = await db.post.findMany({
       where: {
         user: {
-          encryptedPageToken: { not: null }, // Chỉ lấy user đã kết nối Fanpage
+          encryptedPageToken: { not: null },
         },
         OR: [
-          { lastSyncedAt: null },            // Chưa từng đồng bộ
-          { lastSyncedAt: { lt: cutoffTime } } // Hoặc đã đồng bộ quá 10 phút
+          { lastSyncedAt: null },
+          { lastSyncedAt: { lt: cutoffTime } }
         ],
       },
       include: {
@@ -232,7 +225,7 @@ async function handleSyncPosts(request: Request) {
           select: { encryptedPageToken: true },
         },
       },
-      orderBy: { lastSyncedAt: "asc" }, // Ưu tiên bài lâu chưa update nhất
+      orderBy: { lastSyncedAt: "asc" },
       take: MAX_POSTS_PER_RUN,
     });
 
@@ -240,17 +233,14 @@ async function handleSyncPosts(request: Request) {
       return NextResponse.json({ message: "Tất cả dữ liệu đã được cập nhật mới nhất." });
     }
 
-    // 3. Chạy vòng lặp xử lý từng bài viết
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const results = await Promise.allSettled(
       postsToSync.map(async (post) => {
         const accessToken = post.user.encryptedPageToken;
-        if (!accessToken) return; // Bỏ qua nếu không có token
+        if (!accessToken) return;
 
-        // Giả sử post.id chính là Facebook Post ID
         const fbPostId = post.id; 
 
-        // Gọi Graph API
         const params = new URLSearchParams({
           fields: "from,shares,comments.summary(true),reactions.summary(true),insights.metric(post_impressions_unique)",
           access_token: accessToken,
@@ -261,21 +251,18 @@ async function handleSyncPosts(request: Request) {
         );
 
         if (!response.ok) {
-          // Nếu bài viết bị xóa trên FB hoặc lỗi Token -> Log lại và bỏ qua
           console.error(`Lỗi sync post ${post.id}:`, await response.text());
           return;
         }
 
         const data = (await response.json()) as GraphResponse;
 
-        // Parse dữ liệu an toàn (Null Coalescing)
         const newViews = data.insights?.data?.[0]?.values?.[0]?.value ?? post.views;
         const newInteractions = data.reactions?.summary?.total_count ?? post.interactions;
         const newShares = data.shares?.count ?? post.shares;
         const newComments = data.comments?.summary?.total_count ?? post.comments;
         const newPageName = data.from?.name ?? post.pageName;
         
-        // Update lên DB
         await db.post.update({
           where: { id: post.id },
           data: {
@@ -300,7 +287,6 @@ async function handleSyncPosts(request: Request) {
   }
 }
 
-// From src/app/api/posts/[id]/route.ts
 async function handleGetPostById(request: Request, id: string) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -343,7 +329,6 @@ async function handleGetPostById(request: Request, id: string) {
   }
 }
 
-// From src/app/api/posts/[id]/route.ts
 async function handleUpdatePost(request: Request, id: string) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -410,7 +395,6 @@ async function handleUpdatePost(request: Request, id: string) {
   }
 }
 
-// From src/app/api/posts/[id]/route.ts
 async function handleDeletePost(request: Request, id: string) {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
