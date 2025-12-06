@@ -1,11 +1,23 @@
-// src/app/api/n8n/trigger/route.ts
-// API endpoint để trigger n8n webhook với rule cụ thể
 import { NextResponse } from "next/server";
 import { auth } from "~/server/auth";
 import { db } from "~/server/db";
 
-// POST: Trigger n8n webhook với rule cụ thể
-export async function POST(request: Request) {
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ action: string }> }
+) {
+  const { action } = await params;
+
+  if (action === "trigger") {
+    return handleTrigger(request);
+  } else if (action === "webhook") {
+    return handleWebhook(request);
+  }
+
+  return NextResponse.json({ error: "Invalid action" }, { status: 404 });
+}
+
+async function handleTrigger(request: Request) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -168,7 +180,7 @@ export async function POST(request: Request) {
     if (responseText) {
         try {
             data = JSON.parse(responseText) as { status?: string; post_id?: string };
-        } catch (e) {
+        } catch {
             console.warn("n8n response is not JSON:", responseText);
             data = { message: responseText }; // Nếu không phải JSON, coi như message text
         }
@@ -204,6 +216,47 @@ export async function POST(request: Request) {
           errorType: error instanceof Error ? error.constructor.name : typeof error,
           n8nWebhookUrl: n8nWebhookUrl ? "Đã cấu hình" : "Chưa cấu hình",
         }),
+      },
+      { status: 500 }
+    );
+  }
+}
+
+async function handleWebhook(request: Request) {
+  const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
+
+  if (!n8nWebhookUrl) {
+    return NextResponse.json({ error: "N8N webhook URL chưa được cấu hình" }, { status: 500 });
+  }
+
+  const body = (await request.json()) as unknown;
+
+  try {
+    // Gọi n8n webhook
+    const response = await fetch(n8nWebhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw new Error(`N8N webhook failed: ${response.statusText}`);
+    }
+
+    const data = (await response.json()) as unknown;
+
+    return NextResponse.json({
+      success: true,
+      data,
+    } as { success: boolean; data: unknown });
+  } catch (error) {
+    console.error("N8N webhook error:", error);
+    return NextResponse.json(
+      {
+        error: "Lỗi khi gọi N8N webhook",
+        details: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 500 }
     );
