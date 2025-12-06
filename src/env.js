@@ -22,6 +22,9 @@ export const env = createEnv({
     OPENAI_API_KEY: z.string().optional(),
     CRON_SECRET: z.string().optional(),
     FB_GRAPH_VERSION: z.string().optional(),
+    // Redis (Upstash)
+    UPSTASH_REDIS_REST_URL: z.string().url().optional(),
+    UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
   },
 
   /**
@@ -48,6 +51,8 @@ export const env = createEnv({
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     CRON_SECRET: process.env.CRON_SECRET,
     FB_GRAPH_VERSION: process.env.FB_GRAPH_VERSION,
+    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

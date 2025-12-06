@@ -102,24 +102,20 @@ export async function GET(request: Request) {
             shares: newShares,
             comments: newComments,
             pageName: newPageName,
-            lastSyncedAt: new Date(), // Đánh dấu thời gian cập nhật
+            lastSyncedAt: new Date(),
           },
         });
       })
     );
 
-    // 4. Thống kê kết quả
     const successCount = results.filter((r) => r.status === "fulfilled").length;
-    const failCount = results.length - successCount;
-
-    return NextResponse.json({
-      success: true,
-      synced: successCount,
-      failed: failCount,
+    return NextResponse.json({ 
+      message: `Đã đồng bộ thành công ${successCount}/${postsToSync.length} bài viết`,
+      results 
     });
 
   } catch (error) {
-    console.error("Sync Error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    console.error("Sync error:", error);
+    return NextResponse.json({ error: "Lỗi khi đồng bộ" }, { status: 500 });
   }
 }
